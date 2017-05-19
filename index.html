@@ -21,11 +21,11 @@
 	<script src="analytics.js"></script>
 	<script type="text/javascript">
 		window.onload = function() {
-
+			ga_analytics.ga_demo_event();
+			facebook_analytics.send_demo_event();
+			
 			setTimeout(function(){
-				ga_analytics.ga_demo_event();
-				facebook_analytics.send_demo_event();
-
+				
                 document.querySelector("#mission_critical_data_loaded").innerHTML = "Mission Critical Data Loaded";
                 document.querySelector("#analytics_load_event_requested").removeAttribute("hidden");
                 analyticsController.load();
