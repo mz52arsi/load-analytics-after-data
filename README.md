@@ -17,51 +17,49 @@ Finally, our MOTO has been "What ever does not benefit customer directly is mean
 
 1. Wrap your analytics events under a wrapper as below
 	
-	/* FACEBOOK */
-	var facebook_analytics = {};
+        /* FACEBOOK */
+        var facebook_analytics = {};
+        facebook_analytics.send_demo_event = function(data){
 
-	facebook_analytics.send_demo_event = function(data){
-
-	    if (window.fbq === undefined || window.fbq === null || !window.fbq){
-	        document.querySelector("#fb_event_queued").removeAttribute("hidden");
-	        analyticsController.addMethodProcessQueue(facebook_analytics.send_demo_event, [data]);
-	        return;
+            if (window.fbq === undefined || window.fbq === null || !window.fbq){
+                document.querySelector("#fb_event_queued").removeAttribute("hidden");
+                analyticsController.addMethodProcessQueue(facebook_analytics.send_demo_event, [data]);
+                return;
+            }
+    
+            document.querySelector("#fb_event_executed").removeAttribute("hidden");
+            window.fbq('trackCustom', 'fb_demo_event', {value: data});
 	    }
-
-	    document.querySelector("#fb_event_executed").removeAttribute("hidden");
-	    window.fbq('trackCustom', 'fb_demo_event', {value: data});
-	}
 
 If you see the code it does nothing extra ordinary just pushes the event and data to a processQueue and returns
 
-	if (window.fbq === undefined || window.fbq === null || !window.fbq){
+        if (window.fbq === undefined || window.fbq === null || !window.fbq){
         analyticsController.addMethodProcessQueue(facebook_analytics.send_demo_event, [data]);
-        return;
-    }
-    .....
+            return;
+        }
+        .....
 
 You can call your events from the page anywhere you want.
 
 2. Once you are done with the loading of the your mission critical data, Load analytics data
 we have simulated this with a timer of 3 secs which completes data load and calls the load method.
 
-	setTimeout(function(){
-        .....
-        analyticsController.load();
-        .....
-    }, 3000);
+        setTimeout(function(){
+            .....
+            analyticsController.load();
+            .....
+        }, 3000);
 
 3. When analytics load method is called, it loads the analytics libs and then processes the processQueue which contains the events.
 	
-
-	// PROCESS PENDING QUEUE CALLS
-    analyticsController.initialization_status = "LOADED";
-    setInterval(analyticsController.processPendingQueueCalls, 1000);
+        // PROCESS PENDING QUEUE CALLS
+        analyticsController.initialization_status = "LOADED";
+        setInterval(analyticsController.processPendingQueueCalls, 1000);
 
 This method keeps on calling processPendingQueueCalls untill all the analytics lib are loaded completely.
 	
 	analyticsController.processPendingQueueCalls = function(){
-    
+
 	    // TODO add all your analytics global objects
 	    if (window.ga && window.fbq){
 
