@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Analytics Delay Demo</title>
+
+</head>
+<body>
+	<p>Data will be Loaded After 3000 ms</p>
+	<p hidden>Analytics Loaded</p>
+
+	<p id="mission_critical_data_loaded">Mission Critical Data Load Requesting....</p>
+	<p id="ga_event_queued" hidden>GA Event Queued</p>
+	<p id="fb_event_queued" hidden>Facebook Event Queued</p>
+
+	<p id="analytics_load_event_requested" hidden>Analytics Load Requested</p>
+	<p id="analytics_load_done" hidden>Analytics Load Done</p>
+	
+	<p id="ga_event_executed" hidden>GA Event Executed</p>
+	<p id="fb_event_executed" hidden>Facebook Event Executed</p>
+
+	<script src="analytics.js"></script>
+	<script type="text/javascript">
+		window.onload = function() {
+
+			setTimeout(function(){
+				ga_analytics.ga_demo_event();
+				facebook_analytics.send_demo_event();
+
+                document.querySelector("#mission_critical_data_loaded").innerHTML = "Mission Critical Data Loaded";
+                document.querySelector("#analytics_load_event_requested").removeAttribute("hidden");
+                analyticsController.load();
+                document.querySelector("#analytics_load_done").removeAttribute("hidden");
+            }, 3000);
+		}
+	</script>
+</body>
+</html>
